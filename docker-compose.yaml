@@ -1,0 +1,30 @@
+version: '3.7'
+
+services: 
+  api: 
+    image: fabricioveronez/jornada-api:v1
+    build:
+      context: src/.
+      dockerfile: Dockerfile
+    networks: 
+      - jornadakubernetes      
+    ports:
+      - "8080:8080"
+    environment: 
+      MONGODB_URI: mongodb://mongouser:mongopwd@mongodb:27017/admin
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    restart: always
+    command: --storageEngine wiredTiger
+    networks: 
+      - jornadakubernetes
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopwd
+
+networks: 
+  jornadakubernetes: 
+    driver: bridge      
