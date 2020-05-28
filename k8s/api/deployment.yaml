@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: api
@@ -13,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: fabricioveronez/jornada-api:v1
+        image: fabricioveronez/jornada-k8s-api:v1
         ports:
         - containerPort: 8080
         resources: {}
