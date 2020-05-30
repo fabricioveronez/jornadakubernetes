@@ -1,4 +1,5 @@
 var Product = require('../models/product');
+var cpuStress = require('../cpu-stress/cpu-stress');
 
 exports.productCreate = function (req, res) {
     var product = new Product(
@@ -38,7 +39,20 @@ exports.productAll = function (req, res) {
         if (err) {
             res.statusCode = 404;
             return res.json(err);
-        }
+        }       
+        res.json(product);
+    })
+};
+
+exports.productAllStress = function (req, res) {
+    Product.find({}, function (err, product) {
+        
+        if (err) {
+            res.statusCode = 404;
+            return res.json(err);
+        }       
+
+        cpuStress.blockCpuFor(30000);
         res.json(product);
     })
 };
