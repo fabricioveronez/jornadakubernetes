@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 1
+  replicas: 10
   selector:
     matchLabels:
       app: api
@@ -14,10 +14,16 @@ spec:
     spec:
       containers:
       - name: api
-        image: fabricioveronez/jornada-k8s-api:v1
+        image: fabricioveronez/jornada-kubernetes-api:v4
         ports:
         - containerPort: 8080
-        resources: {}
+        resources: 
+          limits:
+            memory: 60Mi
+            cpu: 500m
+          requests:
+            memory: 40Mi
+            cpu: 250m   
         env:
           - name: MONGODB_URI
             value: mongodb://mongouser:mongopwd@mongo-service:27017/admin

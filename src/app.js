@@ -7,7 +7,23 @@ var product = require('./routes/product');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/health', (res, req) => req.send('Health'));
+const serverStatus = () => {
+    return { 
+       state: 'up', 
+       dbState: mongoose.STATES[mongoose.connection.readyState] 
+    }
+  };
+
+app.get('/health', (res, req) => {  
+    let healthResult = serverStatus();   
+    if (mongoose.connection.readyState == 0) {
+        req.statusCode = 500;
+        req.send('down');        
+    } else {
+        req.json(healthResult);
+    }        
+});
+
 app.use('/api/products', product);
 
 var developer_db_url = 'mongodb://mongouser:mongopwd@localhost:27017/admin';

@@ -2,6 +2,7 @@ version: '3.7'
 
 services: 
   api: 
+    container_name: api
     image: fabricioveronez/jornada-api:v1
     build:
       context: src/.
